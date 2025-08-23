@@ -184,6 +184,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- jk or kj to exit insert mode
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode with jk' })
+vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode with kj' })
+
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -436,6 +440,12 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      -- Git keymaps using telescope
+      vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
+      vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' })
+      vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+      vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]iles' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -857,7 +867,7 @@ require('lazy').setup({
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         },
@@ -994,6 +1004,30 @@ require('lazy').setup({
 
       vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
     end,
+  },
+  -- プラグインセクションに追加
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {
+      direction = 'tab', -- タブで開く
+      close_on_exit = true, -- 終了時に自動で閉じる
+    },
+    keys = {
+      {
+        '<leader>gg',
+        function()
+          local Terminal = require('toggleterm.terminal').Terminal
+          local gitui = Terminal:new {
+            cmd = 'gitui',
+            direction = 'tab',
+            close_on_exit = true,
+          }
+          gitui:toggle()
+        end,
+        desc = '[G]it GUI (GitUI)',
+      },
+    },
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
