@@ -48,3 +48,6 @@ git push origin master
 
 ## ベース
 - [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) - A launch point for your personal nvim configuration
+
+
+pushの検証
