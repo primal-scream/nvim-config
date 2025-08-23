@@ -188,6 +188,18 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode with jk' })
 vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode with kj' })
 
+-- insertモード時のEmacsキーバインド(移動・編集のみ)のエミュレート
+vim.keymap.set('i', '<C-p>', '<Up>') -- ↑
+vim.keymap.set('i', '<C-n>', '<Down>') -- ↓
+vim.keymap.set('i', '<C-b>', '<Left>') -- ←
+vim.keymap.set('i', '<C-f>', '<Right>') -- →
+vim.keymap.set('i', '<C-a>', '<C-o>^') -- 行頭へ
+vim.keymap.set('i', '<C-e>', '<End>') -- 行末へ
+vim.keymap.set('i', '<C-d>', '<Del>') -- Del
+vim.keymap.set('i', '<C-k>', '<C-o>d$') -- 行末まで削除
+vim.keymap.set('i', '<C-y>', '<C-r>+') -- 直前のヤンクをペースト
+vim.keymap.set({ 'i', 'c' }, '<C-h>', '<BS>') -- BackSpace
+
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
