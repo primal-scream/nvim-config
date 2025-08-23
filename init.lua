@@ -534,6 +534,9 @@ require('lazy').setup({
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+          -- Direct Go to [D]
+          map('gd', vim.lsp.buf.definition, 'Go to Definition')
+          map('gD', vim.lsp.buf.declaration, 'Go to Declaration')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -919,6 +922,9 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      -- Automatically pair brackets, quotes, etc.
+      require('mini.pairs').setup()
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
@@ -962,6 +968,32 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+    config = function()
+      require('oil').setup(require('oil').opts or {})
+
+      -- トグル機能付きキーマップ
+      vim.keymap.set('n', '<leader>e', function()
+        -- 現在のバッファがoilかチェック
+        if vim.bo.filetype == 'oil' then
+          vim.cmd 'bd' -- oilバッファを閉じる
+        else
+          vim.cmd 'Oil --float' -- フロートウィンドウで開く
+        end
+      end, { desc = 'Toggle file explorer' })
+
+      vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
