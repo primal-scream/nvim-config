@@ -4,6 +4,10 @@ kickstart.nvimをベースにした個人用のNeovim設定
 
 ## セットアップ
 
+### 事前Install
+- ripgrep
+- gitui
+
 ### 初回設定
 ```bash
 cd ~/.config/nvim
