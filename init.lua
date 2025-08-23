@@ -167,7 +167,7 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 
 -- winborder settings
-vim.o.winborder = 'rounded'
+vim.o.winborder = 'single'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
