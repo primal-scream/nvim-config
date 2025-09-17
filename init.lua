@@ -998,27 +998,18 @@ require('lazy').setup({
     'stevearc/oil.nvim',
     ---@module 'oil'
     ---@type oil.SetupOpts
-    opts = {},
+    opts = {
+      view_options = { show_hidden = true },
+    },
+    config = function(_, opts)
+      require('oil').setup(opts)
+      -- vim-vinegarスタイル: 通常のバッファで - を押したらOilを開く
+      vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+    end,
     -- Optional dependencies
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-    lazy = false,
-    config = function()
-      require('oil').setup(require('oil').opts or {})
-
-      -- トグル機能付きキーマップ
-      vim.keymap.set('n', '<leader>e', function()
-        -- 現在のバッファがoilかチェック
-        if vim.bo.filetype == 'oil' then
-          vim.cmd 'bd' -- oilバッファを閉じる
-        else
-          vim.cmd 'Oil --float' -- フロートウィンドウで開く
-        end
-      end, { desc = 'Toggle file explorer' })
-
-      vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
-    end,
   },
   -- プラグインセクションに追加
   {
