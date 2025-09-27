@@ -178,6 +178,15 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>w', vim.diagnostic.open_float, { desc = 'Show [W]hat is wrong' })
+vim.api.nvim_create_autocmd('DiagnosticChanged', {
+  callback = function()
+    -- クイックフィックスウィンドウが開いている場合のみ更新
+    if vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 then
+      vim.diagnostic.setloclist()
+    end
+  end,
+})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -681,6 +690,25 @@ require('lazy').setup({
             return diagnostic_message[diagnostic.severity]
           end,
         },
+        -- virtual_lines = {
+        --   format = function(diagnostic)
+        --     local message = diagnostic.message
+        --     -- local max_width = vim.api.nvim_win_get_width(0) - 20 -- 画面幅-10文字
+        --     local current_win = vim.api.nvim_get_current_win()
+        --     local win_width = vim.api.nvim_win_get_width(current_win)
+        --     local max_width = math.floor(win_width * 0.85) -- ウィンドウ幅の80%を使用
+        --
+        --     -- 長いメッセージを改行で分割
+        --     local lines = {}
+        --     while #message > max_width do
+        --       table.insert(lines, message:sub(1, max_width))
+        --       message = message:sub(max_width + 1)
+        --     end
+        --     table.insert(lines, message)
+        --
+        --     return table.concat(lines, '\n')
+        --   end,
+        -- },
       }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
@@ -879,6 +907,18 @@ require('lazy').setup({
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        menu = {
+          max_height = 20,
+          scrollbar = true,
+          border = 'rounded',
+          draw = {
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+              { 'kind', 'source_name', gap = 1 },
+            },
+          },
+        },
       },
 
       sources = {
