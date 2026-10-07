@@ -440,7 +440,26 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        defaults = {
+          -- grep 系 (live_grep / grep_string) で隠しファイルも検索する (.git は除外)
+          vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+            '--glob=!**/.git/*',
+          },
+        },
+        pickers = {
+          -- ファイル検索でも隠しファイルを表示する (.git は除外)
+          find_files = {
+            find_command = { 'fd', '--type', 'f', '--hidden', '--exclude', '.git' },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -789,6 +808,34 @@ require('lazy').setup({
           end,
         },
       }
+      -- LSP Settings
+      -- FastAPI
+      vim.lsp.config('fastapi_lsp', {
+        cmd = { 'fastapi-lsp', '--stdio' },
+        filetypes = { 'python', 'html', 'htmldjango' },
+        root_markers = { 'pyproject.toml', '.git' },
+        capabilities = capabilities,
+      })
+      vim.lsp.enable 'fastapi_lsp'
+      vim.lsp.config('pyright', {
+        capabilities = capabilities,
+        settings = {
+          python = {
+            pythonPath = vim.fn.getcwd() .. '/.venv/bin/python',
+          },
+        },
+      })
+      vim.lsp.enable 'pyright'
+      -- Golang
+      vim.lsp.config('gopls', {
+        capabilities = capabilities,
+        settings = {
+          gopls = {
+            semanticTokens = true, -- デフォルトなので省略可
+          },
+        },
+      })
+      vim.lsp.enable 'gopls'
     end,
   },
 

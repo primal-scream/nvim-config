@@ -6,16 +6,16 @@ return {
     lazy = true,
     event = 'InsertEnter',
     opts = {
-      suggestion = {
-        auto_trigger = true,
-        keymap = {
-          accept = '<C-l>', -- Ctrl+l で全体受け入れ
-          accept_word = '<C-Right>', -- 単語単位
-          next = '<M-]>',
-          prev = '<M-[>',
-          dismiss = '<C-]>',
-        },
-      },
+      -- suggestion = {
+      --   auto_trigger = true,
+      --   keymap = {
+      --     accept = '<C-l>', -- Ctrl+l で全体受け入れ
+      --     accept_word = '<C-Right>', -- 単語単位
+      --     next = '<M-]>',
+      --     prev = '<M-[>',
+      --     dismiss = '<C-]>',
+      --   },
+      -- },
       filetypes = {
         yaml = true,
         markdown = true,
@@ -32,7 +32,7 @@ return {
   },
   {
     'yetone/avante.nvim',
-    enabled = true,
+    enabled = false,
     lazy = false,
     event = 'VeryLazy',
     version = false, -- set this if you want to always pull the latest change
