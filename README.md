@@ -5,8 +5,25 @@ kickstart.nvimをベースにした個人用のNeovim設定
 ## セットアップ
 
 ### 事前Install
-- ripgrep
-- gitui
+- Neovim 0.12 以上 (プラグイン管理に組み込みの `vim.pack` を使用)
+- ripgrep, fd (Telescope の検索)
+- tree-sitter-cli (nvim-treesitter のパーサーのビルド)
+- gitui (`<leader>gg`)
+
+```bash
+brew install neovim ripgrep fd tree-sitter-cli gitui
+```
+
+### LSP サーバー
+使うサーバーは `init.lua` の `servers` に明示的に書く。Mason による自動インストール・自動有効化は使わない。
+サーバー本体は PATH 上にあればよい (`:Mason` で入れたものも PATH に追加される)。
+
+- `lua_ls`, `stylua`, `pyright`, `vtsls`, `tailwindcss`, `biome`, `astro`, `jsonls`, `hls`, `omnisharp`: `:Mason` で手動インストール
+- `gopls`: `go install golang.org/x/tools/gopls@latest`
+- `fastapi_lsp`: `fastapi-lsp` を別途インストール
+
+### 自分用の追加プラグイン
+`lua/custom/plugins/*.lua` に置く (`init.lua` は本家との差分を小さく保つ)。
 
 ### 初回設定
 ```bash
